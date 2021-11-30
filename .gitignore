@@ -1,0 +1,7 @@
+# Ignore .idea files
+.idea/*
+# Ignore build files
+build/
+# Ignore gradle files
+.gradle/
+/gradle/wrapper/*.jar
