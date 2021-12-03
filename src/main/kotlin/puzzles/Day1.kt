@@ -3,7 +3,7 @@ package puzzles
 import util.ReaderUtil
 
 class Day1 : Puzzle {
-    private val input: List<String> = ReaderUtil.readResourseAsStrings("input1Full.txt")
+    private val input: List<String> = ReaderUtil.readResourseAsStrings("input1.txt")
     override fun solveDemoPart1(): String {
         TODO("Not yet implemented")
     }
