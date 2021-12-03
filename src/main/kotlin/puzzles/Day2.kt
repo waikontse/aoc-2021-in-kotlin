@@ -4,28 +4,25 @@ import util.ReaderUtil
 import java.lang.RuntimeException
 
 class Day2 : Puzzle {
-    val input = ReaderUtil.readResourseAsStrings("input2.txt")
-    val demoInput = ReaderUtil.readResourseAsStrings("input2demo.txt")
+    val input = ReaderUtil.readResourceAsStrings("input2.txt")
+    val demoInput = ReaderUtil.readResourceAsStrings("input2demo.txt")
 
-    override fun solveDemoPart1(): String {
+    override fun solveDemoPart1(): Int {
         return demoInput.map { str -> str.split(" ")}
             .fold(Pair(0,0)) { coordinates, command ->  solve(command, coordinates)}
             .let { it.first * it.second }
-            .toString()
     }
 
-    override fun solveDemoPart2(): String {
+    override fun solveDemoPart2(): Int {
         return demoInput.map { str -> str.split(" ")}
             .fold(Triple(0,0,0)) { coordinates, command ->  solve2(command, coordinates)}
             .let { it.first * it.second }
-            .toString()
     }
 
-    override fun solvePart1(): String {
+    override fun solvePart1(): Int {
         return input.map { it.split(" ") }
             .fold(Pair(0,0)) { coordinates, command ->  solve(command, coordinates)}
             .let { it.first * it.second }
-            .toString()
     }
 
     private fun solve(riddle: List<String>, coordinates: Pair<Int, Int>): Pair<Int, Int> {
@@ -39,11 +36,10 @@ class Day2 : Puzzle {
         }
     }
 
-    override fun solvePart2(): String {
+    override fun solvePart2(): Int {
         return input.map { it.split(" ") }
             .fold(Triple(0,0,0)) { coordinates, command ->  solve2(command, coordinates)}
             .let { it.first * it.second }
-            .toString()
     }
 
     private fun solve2(riddle: List<String>, coordinates: Triple<Int, Int, Int>): Triple<Int, Int, Int> {

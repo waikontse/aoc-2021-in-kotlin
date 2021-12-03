@@ -1,8 +1,8 @@
 package puzzles
 
 interface Puzzle {
-    fun solveDemoPart1() : String
-    fun solveDemoPart2() : String
-    fun solvePart1() : String
-    fun solvePart2() : String
+    fun solveDemoPart1() : Int
+    fun solveDemoPart2() : Int
+    fun solvePart1() : Int
+    fun solvePart2() : Int
 }
