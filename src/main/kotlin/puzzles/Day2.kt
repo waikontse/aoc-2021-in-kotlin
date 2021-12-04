@@ -1,55 +1,50 @@
 package puzzles
 
 import util.ReaderUtil
-import java.lang.RuntimeException
 
 class Day2 : Puzzle {
     val input = ReaderUtil.readResourceAsStrings("input2.txt")
     val demoInput = ReaderUtil.readResourceAsStrings("input2demo.txt")
 
+    val cmdMapper2 = { cmd: String, steps: Int, coor: List<Int> ->
+        when (cmd) {
+            "forward" ->  coor.toMutableList().apply { this[0] = this[0] + steps }
+            "up" -> coor.toMutableList().apply { this[1] = this[1] - steps }
+            "down" -> coor.toMutableList().apply { this[1] = this[1] + steps }
+            else -> throw RuntimeException("Wrong input received $cmd")
+        }
+    }
+
+    val cmdMapper3 = { cmd: String, steps: Int, coor: List<Int> ->
+        when(cmd) {
+            "forward" -> coor.toMutableList().apply {this[0] = this[0] + steps; this[1] = this[1] + this[2] * steps}
+            "up" -> coor.toMutableList().apply { this[2] = this[2] - steps }
+            "down" -> coor.toMutableList().apply { this[2] = this[2] + steps }
+            else -> throw RuntimeException("Wrong input received $cmd")
+        }
+    }
+
     override fun solveDemoPart1(): Int {
         return demoInput.map { str -> str.split(" ")}
-            .fold(Pair(0,0)) { coordinates, command ->  solve(command, coordinates)}
-            .let { it.first * it.second }
+            .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
+            .let { it[0] * it[1] }
     }
 
     override fun solveDemoPart2(): Int {
         return demoInput.map { str -> str.split(" ")}
-            .fold(Triple(0,0,0)) { coordinates, command ->  solve2(command, coordinates)}
-            .let { it.first * it.second }
+            .fold(listOf(0,0,0)) { coordinates, command ->  cmdMapper3(command[0], command[1].toInt(), coordinates) }
+            .let { it[0] * it[1] }
     }
 
     override fun solvePart1(): Int {
         return input.map { it.split(" ") }
-            .fold(Pair(0,0)) { coordinates, command ->  solve(command, coordinates)}
-            .let { it.first * it.second }
-    }
-
-    private fun solve(riddle: List<String>, coordinates: Pair<Int, Int>): Pair<Int, Int> {
-        val head = riddle[0]
-        val steps = riddle[1].toInt()
-        return when(head) {
-            "forward" -> coordinates.copy(first = coordinates.first + steps)
-            "up" -> coordinates.copy( second = coordinates.second - steps)
-            "down" -> coordinates.copy(second = coordinates.second + steps)
-            else -> throw RuntimeException("Wrong input received $head")
-        }
+            .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
+            .let { it[0] * it[1] }
     }
 
     override fun solvePart2(): Int {
         return input.map { it.split(" ") }
-            .fold(Triple(0,0,0)) { coordinates, command ->  solve2(command, coordinates)}
-            .let { it.first * it.second }
-    }
-
-    private fun solve2(riddle: List<String>, coordinates: Triple<Int, Int, Int>): Triple<Int, Int, Int> {
-        val head = riddle[0]
-        val steps = riddle[1].toInt()
-        return when(head) {
-            "forward" -> coordinates.copy(first = coordinates.first + steps, second = coordinates.second + coordinates.third * steps)
-            "up" -> coordinates.copy( third = coordinates.third - steps)
-            "down" -> coordinates.copy(third = coordinates.third + steps)
-            else -> throw RuntimeException("Wrong input received $head")
-        }
+            .fold(listOf(0,0,0)) { coordinates, command -> cmdMapper3(command[0], command[1].toInt(), coordinates) }
+            .let { it[0] * it[1] }
     }
 }
