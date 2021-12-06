@@ -8,6 +8,7 @@ internal class Day5Test {
 
     @Test
     fun solvePart1() {
+        assertThat(puzzle.solvePart1()).isEqualTo(4873)
     }
 
     @Test
