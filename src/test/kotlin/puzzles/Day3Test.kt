@@ -15,8 +15,7 @@ internal class Day3Test {
 
     @Test
     fun solvePart2() {
-        val vals = listOf(1, 2, 3, 4, 5)
-        vals.windowed(2).forEach(::println)
+        assertThat(puzzle.solvePart2()).isEqualTo(2372923)
     }
 
     @Test
@@ -26,5 +25,6 @@ internal class Day3Test {
 
     @Test
     fun solveDemoPart2() {
+        assertThat(puzzle.solveDemoPart2()).isEqualTo(230)
     }
 }
