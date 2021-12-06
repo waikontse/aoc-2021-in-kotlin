@@ -2,34 +2,39 @@ package puzzles
 
 import util.ReaderUtil
 
-class Day3: Puzzle {
+class Day3: Puzzle(3) {
     val inputDemo: List<String> = ReaderUtil.readResourceAsStrings("input3demo.txt")
     val input: List<String> = ReaderUtil.readResourceAsStrings("input3.txt")
 
-    override fun solveDemoPart1(): Int {
-        return powerReading(inputDemo, 5)
+    override fun solveDemoPart1(): String {
+        return solve(inputDemo, 5)
+    }
+
+    override fun solvePart1(): String {
+        return solve(input, 12)
+    }
+
+    private fun solve(input: List<String>, bitLength: Int): String {
+        return powerReading(input, bitLength)
             .map { it.toInt(2) }
             .reduce { gamma, epsilon -> gamma * epsilon }
+            .toString()
     }
 
-    override fun solvePart1(): Int {
-        return powerReading(input, 12)
-            .map { it.toInt(2) }
-            .reduce {gamma, epsilon -> gamma * epsilon }
+    override fun solvePart2(): String {
+        return solve2(input, 12)
     }
 
-    override fun solvePart2(): Int {
-        val readings = powerReading(input, 12)
+    override fun solveDemoPart2(): String {
+        return solve2(inputDemo, 5)
+    }
+
+    private fun solve2(input: List<String>, bitLength: Int): String {
+        val readings = powerReading(input, bitLength)
         return filter(readings, input)
             .map { it.toInt(2) }
             .reduce {gamma, epsilon -> gamma * epsilon }
-    }
-
-    override fun solveDemoPart2(): Int {
-        val readings = powerReading(inputDemo, 5)
-        return filter(readings, inputDemo)
-            .map { it.toInt(2) }
-            .reduce {gamma, epsilon -> gamma * epsilon }
+            .toString()
     }
 
     private fun powerReading(riddle: List<String>, valueLength: Int): List<String> {

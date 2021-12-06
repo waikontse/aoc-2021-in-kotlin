@@ -2,7 +2,7 @@ package puzzles
 
 import util.ReaderUtil
 
-class Day2 : Puzzle {
+class Day2 : Puzzle(2) {
     val input = ReaderUtil.readResourceAsStrings("input2.txt")
     val demoInput = ReaderUtil.readResourceAsStrings("input2demo.txt")
 
@@ -24,27 +24,31 @@ class Day2 : Puzzle {
         }
     }
 
-    override fun solveDemoPart1(): Int {
+    override fun solveDemoPart1(): String {
         return demoInput.map { str -> str.split(" ")}
             .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
             .let { it[0] * it[1] }
+            .toString()
     }
 
-    override fun solveDemoPart2(): Int {
+    override fun solveDemoPart2(): String {
         return demoInput.map { str -> str.split(" ")}
             .fold(listOf(0,0,0)) { coordinates, command ->  cmdMapper3(command[0], command[1].toInt(), coordinates) }
             .let { it[0] * it[1] }
+            .toString()
     }
 
-    override fun solvePart1(): Int {
+    override fun solvePart1(): String {
         return input.map { it.split(" ") }
             .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
             .let { it[0] * it[1] }
+            .toString()
     }
 
-    override fun solvePart2(): Int {
+    override fun solvePart2(): String {
         return input.map { it.split(" ") }
             .fold(listOf(0,0,0)) { coordinates, command -> cmdMapper3(command[0], command[1].toInt(), coordinates) }
             .let { it[0] * it[1] }
+            .toString()
     }
 }

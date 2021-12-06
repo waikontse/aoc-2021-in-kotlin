@@ -13,6 +13,7 @@ internal class Day5Test {
 
     @Test
     fun solvePart2() {
+        assertThat(puzzle.solvePart2()).isEqualTo(19472)
     }
 
     @Test
@@ -22,5 +23,6 @@ internal class Day5Test {
 
     @Test
     fun solveDemoPart2() {
+        assertThat(puzzle.solveDemoPart2()).isEqualTo(12)
     }
 }

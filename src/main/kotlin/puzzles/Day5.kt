@@ -3,19 +3,19 @@ package puzzles
 import util.ReaderUtil
 import kotlin.math.max
 
-class Day5: Puzzle {
+class Day5: Puzzle(5) {
     val inputDemo = ReaderUtil.readResourceAsStrings("input5demo.txt")
     val input = ReaderUtil.readResourceAsStrings("input5.txt")
 
-    override fun solveDemoPart1(): Int {
+    override fun solveDemoPart1(): String {
         return solvePart1(inputDemo)
     }
 
-    override fun solvePart1(): Int {
+    override fun solvePart1(): String {
         return solvePart1(input)
     }
 
-    private fun solvePart1(rawInput: List<String>): Int {
+    private fun solvePart1(rawInput: List<String>): String {
         val vectors = rawInput.map { it.split(" -> ") }
             .map { parseLine(it) }
             .let { filterDiagonalLines(it) }
@@ -23,33 +23,30 @@ class Day5: Puzzle {
         val largestNumber = findLargestPoint(vectors)
         val map = initializeMap(largestNumber+1)
 
-        vectors.forEach { markLine(map, it.first, it.second, largestNumber) }
+        vectors.forEach { markLine(map, it.first, it.second, largestNumber+1) }
 
-        return map.count { it > 1 }
+        return map.count { it > 1 }.toString()
     }
 
-    override fun solveDemoPart2(): Int {
-        TODO()
+    override fun solveDemoPart2(): String {
+        return solvePart2(inputDemo).toString()
     }
 
-    override fun solvePart2(): Int {
-        return 0
+    override fun solvePart2(): String {
+       return solvePart2(input).toString()
     }
 
     fun solvePart2(rawInput: List<String>): Int {
         val vectors = rawInput.map { it.split(" -> ") }
             .map { parseLine(it) }
-            .let { filterDiagonalLines(it) }
             .let { reorderVectors(it) }
         val largestNumber = findLargestPoint(vectors)
         val map = initializeMap(largestNumber+1)
 
-        vectors.forEach { markLine(map, it.first, it.second, largestNumber) }
+        vectors.forEach { markLine(map, it.first, it.second, largestNumber+1) }
 
         return map.count { it > 1 }
     }
-
-
 
     private fun initializeMap(size: Int): MutableList<Int> = MutableList(size*size) {0}
 
@@ -60,8 +57,7 @@ class Day5: Puzzle {
     }
 
     private fun findLargestPoint(vectors: List<Pair<Pair<Int, Int>, Pair<Int, Int>>>): Int {
-        return vectors.map { max(max(it.first.first, it.first.second), max(it.second.first, it.second.second)) }
-            .maxOrNull()!!
+        return vectors.maxOf { max(max(it.first.first, it.first.second), max(it.second.first, it.second.second)) }
     }
 
     private fun filterDiagonalLines(vectors: List<Pair<Pair<Int, Int>, Pair<Int, Int>>>): List<Pair<Pair<Int, Int>, Pair<Int, Int>>> {
@@ -89,11 +85,11 @@ class Day5: Puzzle {
     private fun markLine(map: MutableList<Int>, from: Pair<Int, Int>, to: Pair<Int, Int>, maxSize: Int) {
         tailrec fun markLine2(map: MutableList<Int>, from: Pair<Int, Int>, to: Pair<Int, Int>, maxSize: Int) {
             if (from == to) {
-                map[from.first * maxSize + from.second]++
+                map[from.first + from.second * maxSize]++
                 return
             }
 
-            map[from.first * maxSize + from.second]++
+            map[from.first + from.second * maxSize]++
             markLine2(map, getNewPoint(from, to), to, maxSize)
         }
 
@@ -102,11 +98,13 @@ class Day5: Puzzle {
 
     private fun getNewPoint(from: Pair<Int, Int>, to: Pair<Int, Int>): Pair<Int, Int> {
         return if (from.first == to.first) {
-            from.copy(second = from.second + 1)
-        } else if (from.first < to.first) {
-            from.copy(first = from.first + 1)
+            from.copy(second = from.second.inc())
+        } else if (from.first < to.first && from.second == to.second) {
+            from.copy(first = from.first.inc())
+        } else if (from.first != to.first && from.second < to.second) {
+            from.copy(first = from.first.inc(), second = from.second.inc())
         } else {
-            throw RuntimeException("Unexpected vector $from $to")
+            from.copy(first = from.first.inc(), second = from.second.dec())
         }
     }
 }

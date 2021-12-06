@@ -1,8 +1,8 @@
 package puzzles
 
-interface Puzzle {
-    fun solveDemoPart1() : Int
-    fun solveDemoPart2() : Int
-    fun solvePart1() : Int
-    fun solvePart2() : Int
+abstract class Puzzle(val day: Int) {
+    abstract fun solveDemoPart1() : String
+    abstract fun solveDemoPart2() : String
+    abstract fun solvePart1() : String
+    abstract fun solvePart2() : String
 }

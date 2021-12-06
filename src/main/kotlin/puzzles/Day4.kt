@@ -2,11 +2,11 @@ package puzzles
 
 import util.ReaderUtil
 
-class Day4: Puzzle {
+class Day4: Puzzle(4) {
     val inputDemo = ReaderUtil.readResourceAsStrings("input4demo.txt")
     val input = ReaderUtil.readResourceAsStrings("input4.txt")
 
-    override fun solveDemoPart1(): Int {
+    override fun solveDemoPart1(): String {
         val sequence = inputDemo.first().split(",").map { it.toInt() }
         val raffles: List<MutableList<Pair<Int, Boolean>>> = inputDemo.drop(1)
             .chunked(6) { parseRaffle(it)}
@@ -21,10 +21,10 @@ class Day4: Puzzle {
             i++
         }
 
-        return countPoint(raffles.filter { hasWon(it) }.first(), sequence[i-1])
+        return countPoint(raffles.filter { hasWon(it) }.first(), sequence[i-1]).toString()
     }
 
-    override fun solveDemoPart2(): Int {
+    override fun solveDemoPart2(): String {
         val sequence = inputDemo.first().split(",").map { it.toInt() }
         val raffles: List<MutableList<Pair<Int, Boolean>>> = inputDemo.drop(1)
             .chunked(6) { parseRaffle(it)}
@@ -47,10 +47,10 @@ class Day4: Puzzle {
         val lastRaffle = raffles2.filter { !hasWon(it) }.first()
         markRaffle(lastRaffle, sequence[i-1])
 
-        return countPoint(lastRaffle, sequence[i-1])
+        return countPoint(lastRaffle, sequence[i-1]).toString()
     }
 
-    override fun solvePart1(): Int {
+    override fun solvePart1(): String {
         val sequence = input.first().split(",").map { it.toInt() }
         val raffles: List<MutableList<Pair<Int, Boolean>>> = input.drop(1)
             .chunked(6) { parseRaffle(it)}
@@ -63,10 +63,10 @@ class Day4: Puzzle {
             i++
         }
 
-        return countPoint(raffles.filter { hasWon(it) }.first(), sequence[i-1])
+        return countPoint(raffles.filter { hasWon(it) }.first(), sequence[i-1]).toString()
     }
 
-    override fun solvePart2(): Int {
+    override fun solvePart2(): String {
         val sequence = input.first().split(",").map { it.toInt() }
         val raffles: List<MutableList<Pair<Int, Boolean>>> = input.drop(1)
             .chunked(6) { parseRaffle(it)}
@@ -89,7 +89,7 @@ class Day4: Puzzle {
         val lastRaffle = raffles2.first { !hasWon(it) }
         markRaffle(lastRaffle, sequence[i-1])
 
-        return countPoint(lastRaffle, sequence[i-1])
+        return countPoint(lastRaffle, sequence[i-1]).toString()
     }
 
     private fun parseRaffle(raffle: List<String>): MutableList<Pair<Int, Boolean>> {
