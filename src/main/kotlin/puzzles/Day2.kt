@@ -1,11 +1,6 @@
 package puzzles
 
-import util.ReaderUtil
-
 class Day2 : Puzzle(2) {
-    val input = ReaderUtil.readResourceAsStrings("input2.txt")
-    val demoInput = ReaderUtil.readResourceAsStrings("input2demo.txt")
-
     val cmdMapper2 = { cmd: String, steps: Int, coor: List<Int> ->
         when (cmd) {
             "forward" ->  coor.toMutableList().apply { this[0] = this[0] + steps }
@@ -25,29 +20,24 @@ class Day2 : Puzzle(2) {
     }
 
     override fun solveDemoPart1(): String {
-        return demoInput.map { str -> str.split(" ")}
-            .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
-            .let { it[0] * it[1] }
-            .toString()
+        return solve(inputDemo, listOf(0,0), cmdMapper2)
     }
 
     override fun solveDemoPart2(): String {
-        return demoInput.map { str -> str.split(" ")}
-            .fold(listOf(0,0,0)) { coordinates, command ->  cmdMapper3(command[0], command[1].toInt(), coordinates) }
-            .let { it[0] * it[1] }
-            .toString()
+        return solve(inputDemo, listOf(0,0,0), cmdMapper3)
     }
 
     override fun solvePart1(): String {
-        return input.map { it.split(" ") }
-            .fold(listOf(0,0)) { coordinates, command -> cmdMapper2(command[0], command[1].toInt(), coordinates) }
-            .let { it[0] * it[1] }
-            .toString()
+        return solve(input, listOf(0,0), cmdMapper2)
     }
 
     override fun solvePart2(): String {
+        return solve(input, listOf(0,0,0), cmdMapper3)
+    }
+
+    private fun solve(input: List<String>, acc: List<Int>, cmdMapper: (String, Int, List<Int>) -> MutableList<Int>): String {
         return input.map { it.split(" ") }
-            .fold(listOf(0,0,0)) { coordinates, command -> cmdMapper3(command[0], command[1].toInt(), coordinates) }
+            .fold(acc) { coordinates, command -> cmdMapper(command[0], command[1].toInt(), coordinates) }
             .let { it[0] * it[1] }
             .toString()
     }

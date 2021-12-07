@@ -1,12 +1,8 @@
 package puzzles
 
-import util.ReaderUtil
 import java.math.BigInteger
 
 class Day6: Puzzle(6) {
-    val inputDemo = ReaderUtil.readResourceAsStrings("input6demo.txt")
-    val input = ReaderUtil.readResourceAsStrings("input6.txt")
-
     override fun solveDemoPart1(): String {
         return solve(inputDemo, 80).toString()
     }

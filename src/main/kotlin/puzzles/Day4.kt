@@ -1,11 +1,6 @@
 package puzzles
 
-import util.ReaderUtil
-
 class Day4: Puzzle(4) {
-    val inputDemo = ReaderUtil.readResourceAsStrings("input4demo.txt")
-    val input = ReaderUtil.readResourceAsStrings("input4.txt")
-
     override fun solveDemoPart1(): String {
         val sequence = inputDemo.first().split(",").map { it.toInt() }
         val raffles: List<MutableList<Pair<Int, Boolean>>> = inputDemo.drop(1)

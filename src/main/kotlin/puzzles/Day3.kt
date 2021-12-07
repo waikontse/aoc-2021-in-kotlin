@@ -1,11 +1,6 @@
 package puzzles
 
-import util.ReaderUtil
-
 class Day3: Puzzle(3) {
-    val inputDemo: List<String> = ReaderUtil.readResourceAsStrings("input3demo.txt")
-    val input: List<String> = ReaderUtil.readResourceAsStrings("input3.txt")
-
     override fun solveDemoPart1(): String {
         return solve(inputDemo, 5)
     }
