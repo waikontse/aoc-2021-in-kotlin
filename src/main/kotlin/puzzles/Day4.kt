@@ -11,7 +11,6 @@ class Day4: Puzzle(4) {
         while (!hasWon) {
             raffles.forEach { raffle -> markRaffle(raffle, sequence[i]) }
             val hasWons = raffles.map { hasWon(it) }
-            println(hasWons)
             hasWon =  hasWons.contains(true)
             i++
         }

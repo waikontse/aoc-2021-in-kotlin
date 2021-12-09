@@ -16,7 +16,7 @@ fun main() {
     """.trimIndent())
 
 
-    val puzzleList = listOf(Day1(), Day2(), Day3(), Day4(), Day5(), Day6(), Day7())
+    val puzzleList = listOf(Day1(), Day2(), Day3(), Day4(), Day5(), Day6(), Day7(), Day9())
     val printer = AnswerPrinter()
     puzzleList.forEach { printer.printPuzzleAnswer(it)}
 }
