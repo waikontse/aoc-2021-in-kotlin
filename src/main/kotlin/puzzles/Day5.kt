@@ -1,12 +1,8 @@
 package puzzles
 
-import util.ReaderUtil
 import kotlin.math.max
 
 class Day5: Puzzle(5) {
-    val inputDemo = ReaderUtil.readResourceAsStrings("input5demo.txt")
-    val input = ReaderUtil.readResourceAsStrings("input5.txt")
-
     override fun solveDemoPart1(): String {
         return solvePart1(inputDemo)
     }

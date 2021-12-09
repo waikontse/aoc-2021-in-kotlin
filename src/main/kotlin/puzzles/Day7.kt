@@ -1,15 +1,11 @@
 package puzzles
 
-import util.ReaderUtil
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 
 class Day7: Puzzle(7) {
-    val inputDemo = ReaderUtil.readResourceAsStrings("input7demo.txt")
-    val input = ReaderUtil.readResourceAsStrings("input7.txt")
-
     override fun solveDemoPart1(): String {
         return solve(inputDemo, ::getFuelCostPart1).toString()
     }

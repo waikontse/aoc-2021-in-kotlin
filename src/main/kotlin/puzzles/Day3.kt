@@ -1,11 +1,6 @@
 package puzzles
 
-import util.ReaderUtil
-
 class Day3: Puzzle(3) {
-    val inputDemo: List<String> = ReaderUtil.readResourceAsStrings("input3demo.txt")
-    val input: List<String> = ReaderUtil.readResourceAsStrings("input3.txt")
-
     override fun solveDemoPart1(): String {
         return solve(inputDemo, 5)
     }
@@ -55,50 +50,32 @@ class Day3: Puzzle(3) {
     }
 
     private fun filter(powerLevels: List<String>, readings: List<String>): List<String> {
-        return  filter2(powerLevels[0], 0, readings) + filter3(powerLevels[1], 0, readings)
+        return  filter2(powerLevels[0], readings, 0, '1', 0) +
+                filter2(powerLevels[1], readings, 0, '0', 1)
     }
 
-    private fun filter2(reading: String, index: Int, readings: List<String>): List<String> {
+    private fun filter2(reading: String, readings: List<String>, index: Int, targetChar: Char, targetIndex: Int): List<String> {
         if (readings.size == 1) {
             return readings
         }
 
         if (readings.size % 2 == 0) {
             val charCount = readings.groupingBy { it[index] }.eachCount()
+            val hasSameCount = charCount['0'] == charCount['1']
             val newReadings =
-            if (charCount['0'] == charCount['1']) readings.filter { it[index] == '1' } else readings.filter { it[index] == reading[index] }
+            if (hasSameCount)
+                readings.filter { it[index] == targetChar }
+            else
+                readings.filter { it[index] == reading[index] }
+            val newReading = powerReading(newReadings, reading.length)[targetIndex]
 
-            val newReading = powerReading(newReadings, reading.length)[0]
-
-            return filter2(newReading, index+1, newReadings)
+            return filter2(newReading,  newReadings, index+1, targetChar, targetIndex)
         }
         else {
             val newReadings = readings.filter { it[index] == reading[index] }
-            val newReading = powerReading(newReadings, reading.length)[0]
+            val newReading = powerReading(newReadings, reading.length)[targetIndex]
 
-            return filter2(newReading, index+1, newReadings)
-        }
-    }
-
-    private fun filter3(reading: String, index: Int, readings: List<String>): List<String> {
-        if (readings.size == 1) {
-            return readings
-        }
-
-        if (readings.size % 2 == 0) {
-            val charCount = readings.groupingBy { it[index] }.eachCount()
-            val newReadings =
-                if (charCount['0'] == charCount['1']) readings.filter { it[index] == '0' } else readings.filter { it[index] == reading[index] }
-
-            val newReading = powerReading(newReadings, reading.length)[1]
-
-            return filter3(newReading, index+1, newReadings)
-        }
-        else {
-            val newReadings = readings.filter { it[index] == reading[index] }
-            val newReading = powerReading(newReadings, reading.length)[1]
-
-            return filter3(newReading, index+1, newReadings)
+            return filter2(newReading, newReadings, index+1, targetChar, targetIndex)
         }
     }
 }

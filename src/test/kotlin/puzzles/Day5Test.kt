@@ -8,21 +8,21 @@ internal class Day5Test {
 
     @Test
     fun solvePart1() {
-        assertThat(puzzle.solvePart1()).isEqualTo(4873)
+        assertThat(puzzle.solvePart1()).isEqualTo("4873")
     }
 
     @Test
     fun solvePart2() {
-        assertThat(puzzle.solvePart2()).isEqualTo(19472)
+        assertThat(puzzle.solvePart2()).isEqualTo("19472")
     }
 
     @Test
     fun solveDemoPart1() {
-        assertThat(puzzle.solveDemoPart1()).isEqualTo(5)
+        assertThat(puzzle.solveDemoPart1()).isEqualTo("5")
     }
 
     @Test
     fun solveDemoPart2() {
-        assertThat(puzzle.solveDemoPart2()).isEqualTo(12)
+        assertThat(puzzle.solveDemoPart2()).isEqualTo("12")
     }
 }

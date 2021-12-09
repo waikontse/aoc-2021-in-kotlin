@@ -1,10 +1,6 @@
 package puzzles
 
-import util.ReaderUtil
-
 class Day1 : Puzzle(1) {
-
-    private val input: List<String> = ReaderUtil.readResourceAsStrings("input1.txt")
     override fun solveDemoPart1(): String {
         TODO("Not yet implemented")
     }
