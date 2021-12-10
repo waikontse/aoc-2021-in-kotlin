@@ -1,16 +1,13 @@
-package puzzles
+package puzzles.week2
 
-import util.ReaderUtil
+import puzzles.Puzzle
 
 class Day8: Puzzle(8) {
-    val inputDemo = ReaderUtil.readResourceAsStrings("input8demo.txt")
-    val input = ReaderUtil.readResourceAsStrings("input8.txt")
-
     val distanceToNumer: Map<Int, List<Pair<Int, Int>>> = mapOf(
         1 to listOf(4 to 2, 3 to 3, 4 to 5, 5 to 6, 4 to 9, 4 to 0),
         4 to listOf(3 to 2, 2 to 3, 2 to 5, 3 to 6, 2 to 9, 3 to 0),
         7 to listOf(3 to 2, 2 to 3, 3 to 5, 4 to 6, 3 to 9, 3 to 0),
-        8 to listOf(2 to 2, 2 to 3, 2 to 5, 1 to 6, 1 to 9, 1 to 0)
+        8 to listOf(2 to 2, 2 to 3, 2 to 5, 2 to 6, 1 to 9, 1 to 0)
     )
 
     override fun solveDemoPart1(): String {

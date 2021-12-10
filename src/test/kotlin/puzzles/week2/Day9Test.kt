@@ -1,4 +1,4 @@
-package puzzles
+package puzzles.week2
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
