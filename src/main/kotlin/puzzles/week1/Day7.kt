@@ -1,5 +1,6 @@
-package puzzles
+package puzzles.week1
 
+import puzzles.Puzzle
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

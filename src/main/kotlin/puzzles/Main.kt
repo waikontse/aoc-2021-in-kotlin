@@ -1,5 +1,7 @@
 package puzzles
 
+import puzzles.week1.*
+import puzzles.week2.Day9
 import util.AnswerPrinter
 
 fun main() {

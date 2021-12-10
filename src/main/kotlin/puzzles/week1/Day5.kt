@@ -1,5 +1,6 @@
-package puzzles
+package puzzles.week1
 
+import puzzles.Puzzle
 import kotlin.math.max
 
 class Day5: Puzzle(5) {

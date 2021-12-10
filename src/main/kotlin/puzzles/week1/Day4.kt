@@ -1,4 +1,6 @@
-package puzzles
+package puzzles.week1
+
+import puzzles.Puzzle
 
 class Day4: Puzzle(4) {
     override fun solveDemoPart1(): String {
