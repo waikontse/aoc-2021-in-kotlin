@@ -1,6 +1,8 @@
-package puzzles
+package puzzles.week2
 
-class Day9: Puzzle(9) {
+import puzzles.Puzzle
+
+class Day13: Puzzle(13) {
     override fun solveDemoPart1(): String {
         TODO("Not yet implemented")
     }

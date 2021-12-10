@@ -1,5 +1,6 @@
-package puzzles
+package puzzles.week1
 
+import puzzles.Puzzle
 import java.math.BigInteger
 
 class Day6: Puzzle(6) {

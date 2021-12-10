@@ -1,9 +1,7 @@
-package puzzles
+package puzzles.week1
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import java.time.Duration
-import java.time.Instant
 
 internal class Day6Test {
     val puzzle = Day6()

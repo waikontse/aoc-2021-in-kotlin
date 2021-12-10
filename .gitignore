@@ -5,3 +5,4 @@ build/
 # Ignore gradle files
 .gradle/
 /gradle/wrapper/*.jar
+/cookie_aoc.txt

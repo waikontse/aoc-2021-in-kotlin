@@ -1,4 +1,6 @@
-package puzzles
+package puzzles.week1
+
+import puzzles.Puzzle
 
 class Day2 : Puzzle(2) {
     val cmdMapper2 = { cmd: String, steps: Int, coor: List<Int> ->

@@ -1,4 +1,6 @@
-package puzzles
+package puzzles.week1
+
+import puzzles.Puzzle
 
 class Day4: Puzzle(4) {
     override fun solveDemoPart1(): String {
@@ -11,7 +13,6 @@ class Day4: Puzzle(4) {
         while (!hasWon) {
             raffles.forEach { raffle -> markRaffle(raffle, sequence[i]) }
             val hasWons = raffles.map { hasWon(it) }
-            println(hasWons)
             hasWon =  hasWons.contains(true)
             i++
         }
