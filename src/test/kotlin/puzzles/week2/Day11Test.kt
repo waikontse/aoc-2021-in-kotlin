@@ -13,13 +13,16 @@ internal class Day11Test {
 
     @Test
     fun solveDemoPart2() {
+        assertThat(puzzle.solveDemoPart2()).isEqualTo("195")
     }
 
     @Test
     fun solvePart1() {
+        assertThat(puzzle.solvePart1()).isEqualTo("1661")
     }
 
     @Test
     fun solvePart2() {
+        assertThat(puzzle.solvePart2()).isEqualTo("334")
     }
 }
