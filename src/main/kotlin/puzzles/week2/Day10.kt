@@ -20,9 +20,6 @@ class Day10: Puzzle(10) {
     }
 
     private fun solve(input: List<String>): String {
-        input.filter { isIncorrectLine(it) }
-            .apply { println ("Found incorrect lines ${this.size}") }
-
         return input.filter { isIncorrectLine(it) }
             .map { findIncorrectChar(it) }
             .map { mapCharToPoint(it.second) }
@@ -43,13 +40,8 @@ class Day10: Puzzle(10) {
 
     private fun isIncorrectLine(lineInput: String): Boolean {
         tailrec fun isIncorrectLine(openingChars: ArrayDeque<Char>, inputChars: List<Char>): Boolean {
-            if (inputChars.isEmpty()) {
-                return false
-            }
-
-            if (openingChars.isEmpty() && isClosingChar(inputChars.first())) {
-                return true
-            }
+            if (inputChars.isEmpty()) { return false }
+            if (openingChars.isEmpty() && isClosingChar(inputChars.first())) { return true }
 
             if (isOpeningChar(inputChars.first())) {
                 openingChars.add(inputChars.first())
