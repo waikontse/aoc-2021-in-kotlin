@@ -24,13 +24,10 @@ class Day13: Puzzle(13) {
         val foldInstructions = input.subList(splitIndex+1, input.size)
         val paper = input.subList(0, splitIndex).map { toPoint(it) }.toSet()
 
-//        println ("fold instructions")
+
         val foldInstructions2 = foldInstructions.map { toFoldInstruction(it) }
-//        println ("points")
-        // foldYAxis(points.map { toPoint(it) }.toSet(), 7).size.toString()
 
         return fold(paper, listOf(foldInstructions2.first()))
-            .apply { println(this) }
             .size
             .toString()
     }
@@ -40,10 +37,7 @@ class Day13: Puzzle(13) {
         val foldInstructions = input.subList(splitIndex+1, input.size)
         val paper = input.subList(0, splitIndex).map { toPoint(it) }.toSet()
 
-//        println ("fold instructions")
         val foldInstructions2 = foldInstructions.map { toFoldInstruction(it) }
-//        println ("points")
-        // foldYAxis(points.map { toPoint(it) }.toSet(), 7).size.toString()
 
         return drawMap(fold(paper, foldInstructions2))
     }
@@ -66,10 +60,6 @@ class Day13: Puzzle(13) {
     }
 
     private fun foldXAxis(paper: Set<Pair<Int, Int>>, foldAlongX: Int): Set<Pair<Int, Int>> {
-        println ("Folding along x $foldAlongX")
-        // Remove the points
-        // modify the points
-        // join the points back
         val keepSet = paper.filter { it.first < foldAlongX }.toSet()
         val newSet = paper.filter { it.first > foldAlongX }
             .map { it.copy(first = foldAlongX - (it.first - foldAlongX)) }
@@ -78,7 +68,6 @@ class Day13: Puzzle(13) {
     }
 
     private fun foldYAxis(paper: Set<Pair<Int, Int>>, foldAlongY: Int): Set<Pair<Int, Int>> {
-        println ("Folding along x $foldAlongY")
         val keepSet = paper.filter { it.second < foldAlongY }.toSet()
         val newSet = paper.filter { it.second > foldAlongY }
             .map { it.copy(second = foldAlongY - (it.second - foldAlongY)) }
@@ -87,7 +76,7 @@ class Day13: Puzzle(13) {
     }
 
     private fun foldAlong(paper: Set<Pair<Int, Int>>,
-                     foldFunc: (Set<Pair<Int, Int>>) -> Set<Pair<Int, Int>>): Set<Pair<Int, Int>> {
+                          foldFunc: (Set<Pair<Int, Int>>) -> Set<Pair<Int, Int>>): Set<Pair<Int, Int>> {
         return setOf()
     }
 
@@ -103,7 +92,6 @@ class Day13: Puzzle(13) {
         val width = points.maxOf { it.first } + 1
         val height = points.maxOf { it.second } + 1
         val mutableList = MutableList(width*height) { " " }
-        println ("width $width heigth $height")
 
         points.forEach { mutableList[it.first + width* it.second] = "#" }
 
