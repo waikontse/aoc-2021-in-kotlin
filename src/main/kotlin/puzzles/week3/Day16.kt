@@ -2,7 +2,7 @@ package puzzles.week3
 
 import puzzles.Puzzle
 
-data class Packet(val version: Int, val typeId: Int, val lengthType: Int = -1, val literal: Int, val subPackets: List<Packet>)
+data class Packet(val version: Int, val typeId: Int, val lengthType: Int = -1, val literal: Long, val subPackets: List<Packet>)
 data class ParseInfo(val input: String, val currentPos: Int) {
     fun movePos(increment: Int): ParseInfo = this.copy(currentPos = this.currentPos + increment)
     fun charAtPos(): Char = input[currentPos]
@@ -12,24 +12,55 @@ data class ParseInfo(val input: String, val currentPos: Int) {
 
 class Day16: Puzzle(16) {
     override fun solveDemoPart1(): String {
-        val binaryString = convertToBinary(inputDemo.first())
-        //val parseInfo = ParseInfo(binaryString, 0)
-        val packet = parsePackets(binaryString)
-        println("$packet")
-
-        return convertToBinary(inputDemo.first())
+        return getAllVersionNumbers(inputDemo)
     }
 
     override fun solveDemoPart2(): String {
-        TODO("Not yet implemented")
+        return calculate(inputDemo)
     }
 
     override fun solvePart1(): String {
-        TODO("Not yet implemented")
+        return getAllVersionNumbers(input)
     }
 
     override fun solvePart2(): String {
-        TODO("Not yet implemented")
+        return calculate(input)
+    }
+
+    private fun getAllVersionNumbers(input: List<String>): String {
+        fun getAllVersionNumbers(packets: List<Packet>): Int {
+            if (packets.isEmpty()) {
+                return 0
+            }
+
+            return packets.sumOf { it.version } + packets.sumOf { getAllVersionNumbers(it.subPackets) }
+        }
+
+        val binaryString = convertToBinary(input.first())
+        val packets = parsePackets(binaryString)
+
+        return getAllVersionNumbers(packets).toString()
+    }
+
+    private fun calculate(input: List<String>): String {
+        fun calculate(packet: Packet): Long {
+            return when (packet.typeId) {
+                0 -> packet.subPackets.map { calculate(it) }.fold(0) {acc, v -> acc + v}
+                1 -> packet.subPackets.map { calculate(it) }.fold(1) {acc, v -> acc * v}
+                2 -> packet.subPackets.minOf { calculate(it) }
+                3 -> packet.subPackets.maxOf { calculate(it) }
+                4 -> packet.literal
+                5 -> if (calculate(packet.subPackets[0]) > calculate(packet.subPackets[1])) 1 else 0
+                6 -> if (calculate(packet.subPackets[0]) < calculate(packet.subPackets[1])) 1 else 0
+                7 -> if (calculate(packet.subPackets[0]) == calculate(packet.subPackets[1])) 1 else 0
+                else ->  throw UnsupportedOperationException()
+            }
+        }
+
+        val binaryString = convertToBinary(input.first())
+        val packets = parsePackets(binaryString)
+
+        return calculate(packets[0]).toString()
     }
 
     private fun convertToBinary(input: String): String {
@@ -63,26 +94,22 @@ class Day16: Puzzle(16) {
     }
 
     private fun parsePacket(parseInfo: ParseInfo): Pair<Packet, ParseInfo> {
-        println ("Starting parse packet $parseInfo")
-        // parseVersion
         val version = parseVersion(parseInfo)
-        // parseType
         val typeId = parseType(version.second)
-        // parse literal / parse operator
-        val literal: Pair<Int, ParseInfo>
+        val literal: Pair<Long, ParseInfo>
         val lengthType: Pair<Int, ParseInfo>
-        val subPackets: List<Packet>
+        val subPackets: Pair<List<Packet>, ParseInfo>
         if (typeId.first == 4) {
             literal = parseLiteral(typeId.second)
-            lengthType = -1 to parseInfo
-            subPackets = listOf()
+            lengthType = -1 to literal.second
+            subPackets = listOf<Packet>() to lengthType.second
         } else {
             lengthType = parseLengthType(typeId.second)
             literal = parseLengthLiteral(lengthType.second, lengthType.first)
-            subPackets = listOf()
+            subPackets = parseOperator(literal.second, lengthType.first, literal.first)
         }
 
-        return Packet(version.first, typeId.first, lengthType.first, literal.first, subPackets) to literal.second
+        return Packet(version.first, typeId.first, lengthType.first, literal.first, subPackets.first) to subPackets.second
     }
 
     private fun parseVersion(parseInfo: ParseInfo): Pair<Int, ParseInfo> {
@@ -93,19 +120,16 @@ class Day16: Puzzle(16) {
         return parseInfo.substring(3).toInt(2) to parseInfo.movePos(3)
     }
 
-    private fun parseLiteral(parseInfo: ParseInfo): Pair<Int, ParseInfo> {
-        tailrec fun parseLiteral(parseInfo: ParseInfo, decoded: String): Pair<Int, ParseInfo> {
-            println ("ParseLiteral 2  $parseInfo")
+    private fun parseLiteral(parseInfo: ParseInfo): Pair<Long, ParseInfo> {
+        tailrec fun parseLiteral(parseInfo: ParseInfo, decoded: String): Pair<Long, ParseInfo> {
             if (parseInfo.charAtPos() == '0') {
                 val section = parseInfo.substring(5).drop(1)
-                return decoded.plus(section).toInt(2) to parseInfo.movePos(5)
+                return decoded.plus(section).toLong(2) to parseInfo.movePos(5)
             }
 
             val section = parseInfo.substring(5).drop(1)
             return parseLiteral(parseInfo.movePos(5), decoded.plus(section))
         }
-
-        println ("ParseLiteral 1 $parseInfo")
 
         return parseLiteral(parseInfo, "")
     }
@@ -114,18 +138,37 @@ class Day16: Puzzle(16) {
         return parseInfo.substring(1).toInt() to parseInfo.movePos(1)
     }
 
-    private fun parseLengthLiteral(parseInfo: ParseInfo, lengthType: Int): Pair<Int, ParseInfo> {
-        //println("parse length literal $parseInfo ${parseInfo.substring(15)}")
+    private fun parseLengthLiteral(parseInfo: ParseInfo, lengthType: Int): Pair<Long, ParseInfo> {
         return when(lengthType) {
-            0 -> parseInfo.substring(15).toInt(2) to parseInfo.movePos(15)
-            1 -> parseInfo.substring(11).toInt(2) to parseInfo.movePos(2)
+            0 -> parseInfo.substring(15).toLong(2) to parseInfo.movePos(15)
+            1 -> parseInfo.substring(11).toLong(2) to parseInfo.movePos(11)
             else -> throw UnsupportedOperationException("Wrong length type: $lengthType")
         }
     }
 
-    private fun parseOperator(parseInfo: ParseInfo, lengthType: Int, lengthLiteral: Int): Pair<List<Packet>, ParseInfo> {
-        when (lengthType) {
-
+    private fun parseOperator(parseInfo: ParseInfo, lengthType: Int, lengthLiteral: Long): Pair<List<Packet>, ParseInfo> {
+        return when (lengthType) {
+            0 -> parseOperatorOnBitLength(parseInfo, lengthLiteral)
+            1 -> parseOperatorOnPacketLength(parseInfo, lengthLiteral)
+            else -> throw UnsupportedOperationException("Unsupported parsing based on length type")
         }
+    }
+
+    private fun parseOperatorOnBitLength(parseInfo: ParseInfo, lengthLiteral: Long): Pair<List<Packet>, ParseInfo> {
+        val packets = parsePackets(parseInfo.substring(lengthLiteral.toInt()))
+        return packets to parseInfo.movePos(lengthLiteral.toInt())
+    }
+
+    private fun parseOperatorOnPacketLength(parseInfo: ParseInfo, lengthLiteral: Long): Pair<List<Packet>, ParseInfo> {
+        tailrec fun parseOperatorOnPacketLength(parseInfo: ParseInfo, lengthLiteral: Long, parsedPackets: List<Packet>): Pair<List<Packet>, ParseInfo> {
+            if (lengthLiteral < 1) {
+                return parsedPackets to parseInfo
+            }
+
+            val newlyParsedPacket = parsePacket(parseInfo)
+            return parseOperatorOnPacketLength(newlyParsedPacket.second, lengthLiteral.dec(), parsedPackets.plus(newlyParsedPacket.first))
+        }
+
+        return parseOperatorOnPacketLength(parseInfo, lengthLiteral, listOf())
     }
 }
