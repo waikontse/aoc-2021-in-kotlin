@@ -23,5 +23,6 @@ internal class Day17Test {
 
     @Test
     fun solvePart2() {
+        assertThat(puzzle.solvePart2()).isEqualTo("1739")
     }
 }
