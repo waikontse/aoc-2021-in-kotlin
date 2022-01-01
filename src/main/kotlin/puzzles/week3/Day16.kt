@@ -2,15 +2,15 @@ package puzzles.week3
 
 import puzzles.Puzzle
 
-data class Packet(val version: Int, val typeId: Int, val lengthType: Int = -1, val literal: Long, val subPackets: List<Packet>)
-data class ParseInfo(val input: String, val currentPos: Int) {
-    fun movePos(increment: Int): ParseInfo = this.copy(currentPos = this.currentPos + increment)
-    fun charAtPos(): Char = input[currentPos]
-    fun substring(length: Int): String = input.substring(currentPos until currentPos + length)
-    fun charsLeft(): Int = input.length - currentPos
-}
-
 class Day16: Puzzle(16) {
+    data class Packet(val version: Int, val typeId: Int, val lengthType: Int = -1, val literal: Long, val subPackets: List<Packet>)
+    data class ParseInfo(val input: String, val currentPos: Int) {
+        fun movePos(increment: Int): ParseInfo = this.copy(currentPos = this.currentPos + increment)
+        fun charAtPos(): Char = input[currentPos]
+        fun substring(length: Int): String = input.substring(currentPos until currentPos + length)
+        fun charsLeft(): Int = input.length - currentPos
+    }
+
     override fun solveDemoPart1(): String {
         return getAllVersionNumbers(inputDemo)
     }
